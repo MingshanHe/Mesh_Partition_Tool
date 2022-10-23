@@ -1,0 +1,1 @@
+./mesh_partition_tool -i /home/brl/Mesh_Partition_Tool/input_files_dir/input_files_demo/  -o /home/brl/Mesh_Partition_Tool/output_files_dir/output_files_demo
