@@ -7,6 +7,7 @@ PROJECT(mesh_partition_tool)
 #head file path，头文件目录
 INCLUDE_DIRECTORIES(
   include
+  /usr/local/include
 )
  
 #source directory，源文件目录
@@ -22,13 +23,13 @@ ADD_EXECUTABLE(${PROJECT_NAME} ${TEST_MATH})
  
 #7.add link library，添加可执行文件所需要的库，比如我们用到了libm.so（命名规则：lib+name+.so），就添加该库的名称
 TARGET_LINK_LIBRARIES(${PROJECT_NAME} m 
-/usr/local/lib 
-boost_regex
-boost_program_options
-boost_filesystem
-boost_system
-boost_thread
-yaml-cpp
-gmp
-mpfr
+# /opt/homebrew/Cellar/cgal
+/usr/local/lib/libboost_regex.a 
+/usr/local/lib/libboost_program_options.a
+/usr/local/lib/libboost_filesystem.a
+/usr/local/lib/libboost_system.a
+/usr/local/lib/libboost_thread.a
+/usr/local/lib/libyaml-cpp.a
+# gmp
+# mpfr
 )
