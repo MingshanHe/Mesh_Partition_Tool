@@ -49,12 +49,13 @@ double target_edge_length = 6.0;//4.0;//0.04;               // arbitrary remeshi
 unsigned int nb_iter = 2;//3;
 
 
-size_t make_vector_of_connected_components(
+void make_vector_of_connected_components(
     Mesh pmesh, 
     pair<int, int> pair_,
     vector<Mesh> &mesh_vec, 
     vector<pair<int, int> >  &pair_vec
 ){
+
     FCCmap fccmap = pmesh.add_property_map<face_descriptor, faces_size_type>("f:CC").first;
     faces_size_type num = PMP::connected_components(pmesh,fccmap);
     vector< pair<size_t, size_t> > component_size(num);
@@ -77,6 +78,7 @@ size_t make_vector_of_connected_components(
           pair_vec.push_back(pair_);
       }
     }
+    
 }
 
 int mkvec_cc(
@@ -90,53 +92,22 @@ int mkvec_cc(
     
     int idx =0;
     BOOST_FOREACH(Mesh pmesh, patch_vec){
-        cout << "\n idx = " << idx ;
-        
+        cout << "\n[MESH INFORMATION]: idx = " << idx;
         make_vector_of_connected_components( pmesh, pair_vec.at(idx), new_patch_vec, new_pair_vec );
-        
         cout << ", new_pair_vec.size() = " << new_pair_vec.size();
         idx++;
     }
     
     for (int i=0; i<patch_vec.size(); ++i){
-            cout << "\npair_vec[" << i << "] = (" << pair_vec[i].first << "," << pair_vec[i].second << ")";
+            cout << "\n[PATCH INFORMATION]: pair_vec[" << i << "] = (" << pair_vec[i].first << "," << pair_vec[i].second << ")";
     }
     
     for (int i=0; i<new_patch_vec.size(); ++i){
-            cout << "\nnew_pair_vec[" << i << "] = (" << new_pair_vec[i].first << "," << new_pair_vec[i].second << ")";
+            cout << "\n[PATCH INFORMATION]: new_pair_vec[" << i << "] = (" << new_pair_vec[i].first << "," << new_pair_vec[i].second << ")";
     }
     
     patch_vec.swap(new_patch_vec);
     pair_vec.swap(new_pair_vec);
     
-    // isotropic remeshing of each patch, to eliminate degenerate or ultra thin triangles. 
-    // does _not_ fix degenerate triangles in tetrahedral meshing of certain polyhedra combinations
-//     int i =0;
-//     BOOST_FOREACH(Mesh pmesh, patch_vec){
-//         cout << "\n remeshing patch" << endl;
-//         std::vector<edge_descriptor> border;
-//         PMP::border_halfedges(faces(pmesh),
-//                           pmesh,
-//                           boost::make_function_output_iterator(halfedge2edge(pmesh, border))
-//                          );
-//         PMP::split_long_edges(border, target_edge_length, pmesh);
-//         PMP::isotropic_remeshing(faces(pmesh),
-//                              target_edge_length,
-//                              pmesh,
-//                              PMP::parameters::number_of_iterations(nb_iter)
-//                              .protect_constraints(true)//i.e. protect border, here  
-//                              //can take a very long time if remesh triangles are too small
-//                             );
-//         patch_vec.at(i) = pmesh;
-// //         std::string filename = "output_files2";
-// //             filename += "/remeshed_patch" + to_string(i) + ".off";
-// //             std::ofstream outfile(filename);
-// //             outfile << pmesh;//patch_vec.at(i);
-// //             outfile.close();
-//         i++;    
-//         
-//         cout << "... finished remeshing patch" << endl;
-//     }
-//     cout << "\n finished all remeshing" << endl;
     return patch_vec.size();
 }

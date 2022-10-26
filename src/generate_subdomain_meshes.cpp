@@ -36,15 +36,17 @@ int generate_subdomain_meshes(
     vector<std::pair<int, int> >  &pair_vec, 
     std::string out_dir
 ){
-    cout << "\nout_dir = " << out_dir << "\n";
+    cout << "[USER INFORMATION]: out_dir = " << out_dir << "\n";
     path p (out_dir.c_str());                                                                                               // Move directory checking to prog_opts.cpp //#########
     try {
-        if (!is_directory(p)){cout << p << "is not a directory\n";}
-        else {  cout << p << " is a directory \n";}
+        if (!is_directory(p)){
+            cout <<"[USER INFORMATION]: out_dir is not a directory and create it.\n";
+            create_directories(out_dir.c_str());
+            }
+        else {
+            cout <<"[USER INFORMATION]: out_dir is a directory \n";
+            }
     }catch (const filesystem_error& ex)  {cout << ex.what() << '\n';}
-/*    
-//   cout << "tissues.begin()->mesh_vec.begin()->is_empty()  = " 
-//   << tissues.begin()->mesh_vec.begin()->is_empty() << "\n ";*/
     
     // store new meshes in std::vector<Tissue> subdomain_meshes 
     // nb "if any" applies to each step
@@ -54,18 +56,22 @@ int generate_subdomain_meshes(
     //iii)each contact patch - named by tissues. 1 for each tissue type, make union, nb preserve features
     
     // build tissue unions
+
     for(std::vector<Tissue>::iterator tissue_it = tissues.begin(); tissue_it != tissues.end(); ++tissue_it) {
-        if (  !(tissue_it->mesh_vec.size()) ) continue;
+        if (  !(tissue_it->mesh_vec.size()) ) {
+            // cout<<tissue_it->mesh_vec.size()<<"[TISSUE INFORMATION]: Tissues are no mesh.\n";
+            continue;
+            }
         Mesh union_msh = *tissue_it->mesh_vec.begin();
         
-        for(std::vector<Mesh>::iterator mesh_it = tissue_it->mesh_vec.begin() +1; mesh_it != tissue_it->mesh_vec.end(); ++mesh_it) {                // i) for each tissue 
-            PMP::corefine_and_compute_union( union_msh, *mesh_it,  union_msh );
-        }//mesh_it
+        for(std::vector<Mesh>::iterator mesh_it = tissue_it->mesh_vec.begin() +1; mesh_it != tissue_it->mesh_vec.end(); ++mesh_it) {  // i) for each tissue 
+            PMP::corefine_and_compute_union( union_msh, *mesh_it,  union_msh );  //mesh_it
+        }
         Tissue new_tissue;
         new_tissue.name = tissue_it->name;
         new_tissue.YoungsModulus = tissue_it->YoungsModulus;
         new_tissue.mesh_vec.push_back(union_msh);
-        new_tissue.mesh_vec.push_back(union_msh);
+        new_tissue.mesh_vec.push_back(union_msh);//TODO: Delete or not.
         subdomain_meshes.push_back(new_tissue);
     }//tissue_it  
     
@@ -83,19 +89,19 @@ int generate_subdomain_meshes(
         }
     }*///tissue_it_a
     
-    cout << "subdomain_meshes.begin()->mesh_vec.begin()->is_empty()  = " << subdomain_meshes.begin()->mesh_vec.begin()->is_empty() << endl;
+    cout << "[PROGRAM INFORMATION]: subdomain_meshes.begin()->mesh_vec.begin()->is_empty()  = " << subdomain_meshes.begin()->mesh_vec.begin()->is_empty() << endl;
     cout << flush;
     // for each tissue ## generate patches ##
     for(std::vector<Tissue>::iterator tissue_it_a = subdomain_meshes.begin(); tissue_it_a != subdomain_meshes.end(); ++tissue_it_a) {               
-        cout << "\n\ntissue_it_a = " << tissue_it_a - subdomain_meshes.begin()<< std::endl;
+        cout << "[TISSUE INFORMATION]: tissue_it_a = " << tissue_it_a - subdomain_meshes.begin()<< std::endl;
         
         for(std::vector<Tissue>::iterator tissue_it_b = subdomain_meshes.begin(); tissue_it_b != tissue_it_a; ++tissue_it_b) {                      // for each senior tissue ## generate interface patches ##
-            cout << "\ntissue_it_b = " << tissue_it_b - subdomain_meshes.begin() << "\t" << std::flush;
+            cout << "[TISSUE INFORMATION]: tissue_it_b = " << tissue_it_b - subdomain_meshes.begin() << "\t" << std::flush;
             Tissue target = *tissue_it_a;
             
             for(std::vector<Tissue>::iterator tissue_it_c = subdomain_meshes.begin(); tissue_it_c != tissue_it_a; ++tissue_it_c) {                  // form union of all other senior tissues - may be the wrong approach.
             // instead, subtract each other tissue from the target.
-                cout << "\ntissue_it_c = " << tissue_it_c - subdomain_meshes.begin()<< std::flush;
+                cout << "[TISSUE INFORMATION]: tissue_it_c = " << tissue_it_c - subdomain_meshes.begin()<< std::flush;
                 if (tissue_it_c == tissue_it_b){
                     cout << "\tcontinue\n";
                     continue;

@@ -9,7 +9,7 @@
 #include <iterator>
 #include <fstream>
 
-#include <CGAL/Exact_predicates_inexact_constructions_kernel.h>
+// #include <CGAL/Exact_predicates_inexact_constructions_kernel.h>
 #include <CGAL/Exact_predicates_exact_constructions_kernel.h>
 #include <CGAL/Surface_mesh.h>
 #include <CGAL/Polygon_mesh_processing/corefinement.h>
@@ -44,6 +44,7 @@ typedef CGAL::Mesh_complex_3_in_triangulation_3<Tr,Mesh_domain::Corner_index,Mes
 typedef CGAL::Mesh_criteria_3<Tr> Mesh_criteria;
 
 using namespace std;
+
 struct Tissue{
        string name;
        int YoungsModulus;

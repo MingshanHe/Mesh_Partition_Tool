@@ -83,19 +83,6 @@ int prog_opts(int ac, char* av[], string * in_dir, string * out_dir, float * edg
             cout << " was set to " << vm["_cell_size"].as<float>() << ".\n";
             _f = vm["_cell_size"].as<float>();
         }
-
-//         Mesh_criteria tmp_criteria(edge_size = _a,
-//                          facet_angle = _b, facet_size = _c, facet_distance = _d,
-//                          cell_radius_edge_ratio = _e, cell_size = _f);
-//             /*
-//                             edge_size,
-//                             facet_angle,
-//                             facet_size,
-//                             facet_distance,
-//                             cell_radius_edge_ratio,
-//                             cell_size
-//                             );*/
-//         *mesh_criteria = tmp_criteria;
     }
     catch(exception& e) {
         cerr << "error: " << e.what() << "\n";
