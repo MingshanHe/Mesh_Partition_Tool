@@ -44,6 +44,7 @@ typedef CGAL::Mesh_complex_3_in_triangulation_3<Tr,Mesh_domain::Corner_index,Mes
 typedef CGAL::Mesh_criteria_3<Tr> Mesh_criteria;
 
 using namespace std;
+
 struct Tissue{
        string name;
        int YoungsModulus;
