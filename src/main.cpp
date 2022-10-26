@@ -15,26 +15,26 @@ int main(int argc, char* argv[])
     
     //// Program options 
     prog_opts(argc, argv, &in_dir, &out_dir, &edge_size);
-    std::cout << "\nprog_opts() done\n" << std::endl;
+    std::cout << "\n[PROGRAM INFORMATION]: Program Options Done -prog_opts()\n" << std::endl;
 
     //// Imports
     load_surface_meshes(in_dir, tissues);
-    std::cout << "\nload_surface_meshes() done" << std::endl;
+    std::cout << "\n[PROGRAM INFORMATION]: Load Mesh File Done -load_surface_meshes()\n" << std::endl;
 
     //// Polygon mesh processing ////
     // Generate subdomain meshes & patches
     generate_subdomain_meshes(tissues, subdomain_meshes, patch_vec, pair_vec, out_dir);  
-    std::cout << "\ngenerate_subdomain_meshes() done" << std::endl;
+    std::cout << "\n[PROGRAM INFORMATION]: Generate Subdomain Meshes Done -generate_subdomain_meshes()\n" << std::endl;
    
     // Split disconnected patches into separate files. & update pair_vec
     //split_patches(patch_vec, pair_vec);
     mkvec_cc(patch_vec, pair_vec);
-    std::cout << "\nmkvec_cc() done" << std::endl;
+    std::cout << "\n[PROGRAM INFORMATION]: Split Disconnected Patches into Separate Files -mkvec_cc()\n" << std::endl;
 
 
     // // 7 make partioned tetrahedral mesh
     make_partitioned_tet_mesh(patch_vec, pair_vec, edge_size, tet_mesh, out_dir);
-    std::cout << "\nmake_partitioned_tet_mesh() done" << std::endl;
+    std::cout << "\n[PROGRAM INFORMATION]: Make Partioned Tetrahedral Mesh Done -make_partitioned_tet_mesh()" << std::endl;
 
 
     return 0;
