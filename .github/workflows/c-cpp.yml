@@ -13,9 +13,24 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: buid
-      run: mkdir build && cd build
-    - name: cmake
-      run: cmake ..
-    - name: make
-      run: make
+    - name: Display the path py pwsh
+      run: |
+        echo "github.workspace is ${{ github.workspace }}."
+        ls ${{ github.workspace }}
+      shell: pwsh
+    - name: CMake Build
+      run: |
+        cd ${{ github.workspace }}
+        ls
+        mkdir build
+        cd build
+        cmake --version
+        cmake --DCMAKE_INSTALL_PREFIX\${{ github.workspace }} ../
+        ls
+      shell: pwsh
+    - name: CMake Install
+      run: |
+        cd ${{ github.workspace }}/build
+        ls
+        make
+      shell: pwsh
