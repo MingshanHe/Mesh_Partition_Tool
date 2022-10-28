@@ -25,7 +25,7 @@ jobs:
         mkdir build
         cd build
         cmake --version
-        cmake --DCMAKE_INSTALL_PREFIX=${{ github.workspace }} ../
+        cmake -DCMAKE_INSTALL_PREFIX=${{ github.workspace }} ../
         ls
       shell: pwsh
     - name: CMake Install
