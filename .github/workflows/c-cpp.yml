@@ -18,19 +18,19 @@ jobs:
         echo "github.workspace is ${{ github.workspace }}."
         ls ${{ github.workspace }}
       shell: pwsh
-    - name: CMake Build
-      run: |
-        cd ${{ github.workspace }}
-        ls
-        mkdir build
-        cd build
-        cmake --version
-        cmake -DCMAKE_INSTALL_PREFIX=${{ github.workspace }} ../
-        ls
-      shell: pwsh
-    - name: CMake Install
-      run: |
-        cd ${{ github.workspace }}/build
-        ls
-        make
-      shell: pwsh
+#     - name: CMake Build
+#       run: |
+#         cd ${{ github.workspace }}
+#         ls
+#         mkdir build
+#         cd build
+#         cmake --version
+#         cmake -DCMAKE_INSTALL_PREFIX=${{ github.workspace }} ../
+#         ls
+#       shell: pwsh
+#     - name: CMake Install
+#       run: |
+#         cd ${{ github.workspace }}/build
+#         ls
+#         make
+#       shell: pwsh
